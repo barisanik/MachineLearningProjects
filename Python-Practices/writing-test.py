@@ -2,8 +2,9 @@
 # It will give a random word and control every input character and will mark every correct letters and mistakes. 
 # It will record the time as well to print at the end of test. There may be effect of time for marking in the future.
 
+import random, datetime, keyboard
+
 def analyzeInput(targetWord):
-    import keyboard
     inputWord, char_event, char = "", "", ""
     inputCharIndex, score, correctTypeScore, falseTypeScore = 0,0,0,0
 
@@ -34,8 +35,6 @@ def analyzeInput(targetWord):
             print("\r{}".format(inputWord), end="")
             return [score, correctTypeScore, falseTypeScore]
         char_event, char = "",""
-
-import random, datetime
 
 level = 0 # Level var. will be used after having an enough word list.
 wordCount = 3 # Word count will be standardized after having an enough word list.
