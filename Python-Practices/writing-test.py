@@ -32,7 +32,7 @@ def analyzeInput(targetWord):
             else:
                 print("\r{}{}{}".format(colorama.Fore.RED,inputWord+char,colorama.Style.RESET_ALL), end="")
                 score -= 10
-                falseTypeScore =+ 1
+                falseTypeScore += 1
         if inputWord == targetWord:
             print("\r{}{}{}".format(colorama.Fore.GREEN,inputWord,colorama.Style.RESET_ALL), end="")
             return [score, correctTypeScore, falseTypeScore]
