@@ -2,8 +2,8 @@
 # It will give a random word and control every input character and will mark every correct letters and mistakes. 
 # It will record the time as well to print at the end of test. There may be effect of time for marking in the future.
 
-import random, datetime, keyboard
-
+import random, datetime, keyboard, colorama
+colorama.init() # Starts colorama: a library colorizes outputs.
 def analyzeInput(targetWord):
     inputWord, char_event, char = "", "", ""
     inputCharIndex, score, correctTypeScore, falseTypeScore = 0,0,0,0
@@ -20,19 +20,21 @@ def analyzeInput(targetWord):
         elif char == "backspace":
             if inputWord:
                 inputWord = inputWord[:-1]
-                print("\r{}".format(inputWord), end="")
+                inputCharIndex -= 1
+                print("\r{}{}".format(inputWord,colorama.Style.RESET_ALL), end="")
         else:
             if char == targetWord[inputCharIndex]:
                 inputCharIndex += 1
                 inputWord += char
-                print("\r{}".format(inputWord), end="")
+                print("\r{}{}".format(inputWord,colorama.Style.RESET_ALL), end="")
                 score += 10
                 correctTypeScore += 1
             else:
+                print("\r{}{}{}".format(colorama.Fore.RED,inputWord+char,colorama.Style.RESET_ALL), end="")
                 score -= 10
                 falseTypeScore =+ 1
         if inputWord == targetWord:
-            print("\r{}".format(inputWord), end="")
+            print("\r{}{}{}".format(colorama.Fore.GREEN,inputWord,colorama.Style.RESET_ALL), end="")
             return [score, correctTypeScore, falseTypeScore]
         char_event, char = "",""
 
