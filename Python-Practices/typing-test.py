@@ -1,4 +1,4 @@
-# This is a writing test program which will include 3 different levels.
+# This is a typing test program which will include 3 different levels.
 # It will give a random word and control every input character and will mark every correct letters and mistakes. 
 # It will record the time as well to print at the end of test. There may be effect of time for marking in the future.
 
