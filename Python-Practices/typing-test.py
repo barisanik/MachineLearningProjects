@@ -15,8 +15,10 @@ def analyzeInput(targetWord):
 
         char = char_event.name
 
-        if char == "enter":
-            break
+        if char == "esc":
+            return [-1, -1, -1]
+        elif char in ["enter","caps lock","tab","shift","right shift","ctrl","right ctrl","home","end","insert","delete","page up","page down","up","down","right","left"]:
+            pass # Ignores the function buttons on the keyboard.
         elif char == "backspace":
             if inputWord:
                 inputWord = inputWord[:-1]
@@ -52,6 +54,8 @@ while wordCount > 0:
     print("\n" + 10 * " " + chosenWord + 10 * " ")
     print("Please write the word above: ")
     outputs = analyzeInput(chosenWord)
+    if outputs[0] == -1:
+        break
     score += outputs[0]
     totalCorrectTypeScore += outputs[1]
     totalFalseTypeScore += outputs[2]
