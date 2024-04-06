@@ -2,7 +2,7 @@
 # It will give a random word and control every input character and will mark every correct letters and mistakes. 
 # It will record the time as well to print at the end of test. There may be effect of time for marking in the future.
 
-import random, datetime, keyboard, colorama
+import random, datetime, keyboard, colorama, numpy as np
 colorama.init() # Starts colorama: a library colorizes outputs.
 def analyzeInput(targetWord):
     inputWord, char_event, char = "", "", ""
@@ -17,7 +17,7 @@ def analyzeInput(targetWord):
 
         if char == "esc":
             return [-1, -1, -1]
-        elif char in ["enter","caps lock","tab","shift","right shift","ctrl","right ctrl","home","end","insert","delete","page up","page down","up","down","right","left"]:
+        elif char in ["enter","caps lock","tab","shift","right shift","ctrl","right ctrl","home","end","insert","delete","page up","page down","up","down","right","left", "print screen"]:
             pass # Ignores the function buttons on the keyboard.
         elif char == "backspace":
             if inputWord:
@@ -48,6 +48,14 @@ startTime, finishTime, wordStartTime, wordFinishTime, score, correctWords, wrong
 totalCorrectTypeScore, totalFalseTypeScore = 0,0
 
 wordList = ["car","rain","time"]
+seed = input("Please provide a text or number (up to 10 character) to select random word choice pattern: ")
+
+if len(seed) > 10: # If seed length is longer than 10 character reduces the seed to 10 character.
+    seed = seed[0:9]
+if seed.isdigit() == False: # If seed is text encodes it into numbers.
+    seed = int(''.join(str(ord(c)) for c in seed))
+random.seed(seed)
+
 startTime = datetime.datetime.now()
 while wordCount > 0:
     chosenWord = random.choice(wordList)
