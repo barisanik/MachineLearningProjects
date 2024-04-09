@@ -4,12 +4,18 @@
 
 import random, datetime, keyboard, colorama, numpy as np
 
+blocked_keys = ["enter","caps lock","tab","shift","right shift","ctrl","right ctrl","home","end","insert","delete","page up","page down","up","down","right","left", "print screen"]
+
 with open("word-list.txt") as file:
     wordList = file.read()
 wordList = list(wordList.split("\n"))
 wordList = [word for word in wordList if len(word) > 3]
 
-blocked_keys = ["enter","caps lock","tab","shift","right shift","ctrl","right ctrl","home","end","insert","delete","page up","page down","up","down","right","left", "print screen"]
+# Excludes blocked keys from word list.
+for word in blocked_keys:
+    if word in wordList:
+        wordList.remove(word)
+
 colorama.init() # Starts colorama: a library colorizes outputs.
 def analyzeInput(targetWord):
     inputWord, char_event, char = "", "", ""
