@@ -9,7 +9,6 @@ blocked_keys = ["enter","caps lock","tab","shift","right shift","ctrl","right ct
 with open("word-list.txt") as file:
     wordList = file.read()
 wordList = list(wordList.split("\n"))
-wordList = [word for word in wordList if len(word) > 3]
 
 # Excludes blocked keys from word list.
 for word in blocked_keys:
@@ -53,8 +52,6 @@ def analyzeInput(targetWord):
             return [score, correctTypeScore, falseTypeScore]
         char_event, char = "",""
 
-level = 0 # Level var. will be used after having an enough word list.
-wordCount = 3 # Word count will be standardized after having an enough word list.
 chosenWord = ""
 inputWord = ""
 startTime, finishTime, wordStartTime, wordFinishTime, score, correctWords, wrongWords = 0,0,0,0,0,0,0
@@ -69,8 +66,40 @@ if seed.isdigit() == False: # If seed is text encodes it into numbers.
     seed = int(''.join(str(ord(c)) for c in seed))
 random.seed(seed)
 
+# Level System
+minWordLength, maxWordLength, totalWordCount = 0, 0, 0
+level = input("Please provide a level (1/2/3 or 0 to get info about levels): ")
+
+while True:
+    if (level.isdigit() == True) and (level in ["1","2","3"]): # If level var. does not numbers
+        break
+    elif level == "0":
+        print("""Level\tWord Length Range\tTotal Word Count
+    Level 1\t3-5\t10
+    Level 2\t5-7\t20
+    Level 3\t7-15\t20""")
+    
+    level = input("Please provide a level (1/2/3 or 0 to get info about levels): ")
+
+if level == "1":
+    minWordLength = 3
+    maxWordLength = 5
+    totalWordCount = 10
+
+elif level == "2":
+    minWordLength = 5
+    maxWordLength = 7
+    totalWordCount = 20
+
+elif level == "3":
+    minWordLength = 7
+    maxWordLength = 15
+    totalWordCount = 20
+
+wordList = [word for word in wordList if (len(word) >= minWordLength) and (len(word) <= maxWordLength)]
+
 startTime = datetime.datetime.now()
-while wordCount > 0:
+while totalWordCount > 0:
     chosenWord = random.choice(wordList)
     print("\n" + 10 * " " + chosenWord + 10 * " ")
     print("Please write the word above: ")
@@ -80,7 +109,7 @@ while wordCount > 0:
     score += outputs[0]
     totalCorrectTypeScore += outputs[1]
     totalFalseTypeScore += outputs[2]
-    wordCount -= 1
+    totalWordCount -= 1
 finishTime = datetime.datetime.now()
 
 print("""\n\tRESULTS\n{}\nCorrect typing: {}
