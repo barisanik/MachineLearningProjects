@@ -28,7 +28,8 @@ def analyzeInput(targetWord):
         char = char_event.name
 
         if char == "esc":
-            return [-1, -1, -1]
+            #return [-1, -1, -1]
+            return[-1, -1]
         elif char in blocked_keys:
             pass # Ignores the function buttons on the keyboard.
         elif char == "backspace":
@@ -41,15 +42,16 @@ def analyzeInput(targetWord):
                 inputCharIndex += 1
                 inputWord += char
                 print("\r{}{}".format(inputWord,colorama.Style.RESET_ALL), end="")
-                score += 10
+                #score += 10
                 correctTypeScore += 1
             else:
                 print("\r{}{}{}".format(colorama.Fore.RED,inputWord+char,colorama.Style.RESET_ALL), end="")
-                score -= 10
+                #score -= 10
                 falseTypeScore += 1
         if inputWord == targetWord:
             print("\r{}{}{}".format(colorama.Fore.GREEN,inputWord,colorama.Style.RESET_ALL), end="")
-            return [score, correctTypeScore, falseTypeScore]
+            #return [score, correctTypeScore, falseTypeScore]
+            return [correctTypeScore, falseTypeScore]
         char_event, char = "",""
 
 chosenWord = ""
@@ -69,6 +71,7 @@ random.seed(seed)
 # Level System
 minWordLength, maxWordLength, totalWordCount = 0, 0, 0
 level = input("Please provide a level (1/2/3 or 0 to get info about levels): ")
+corrTypeWeight, falseTypeWeight = 0, 0
 
 while True:
     if (level.isdigit() == True) and (level in ["1","2","3"]): # If level var. does not numbers
@@ -85,16 +88,23 @@ if level == "1":
     minWordLength = 3
     maxWordLength = 5
     totalWordCount = 10
+    corrTypeWeight = 1
+    falseTypeWeight = 1
 
 elif level == "2":
     minWordLength = 5
     maxWordLength = 7
     totalWordCount = 20
+    corrTypeWeight = 0,7
+    falseTypeWeight = 5
 
 elif level == "3":
     minWordLength = 7
     maxWordLength = 15
     totalWordCount = 20
+    corrTypeWeight = 0.5
+    falseTypeWeight = 10
+
 
 wordList = [word for word in wordList if (len(word) >= minWordLength) and (len(word) <= maxWordLength)]
 
@@ -106,13 +116,18 @@ while totalWordCount > 0:
     outputs = analyzeInput(chosenWord)
     if outputs[0] == -1:
         break
-    score += outputs[0]
-    totalCorrectTypeScore += outputs[1]
-    totalFalseTypeScore += outputs[2]
+    totalCorrectTypeScore += outputs[0]
+    totalFalseTypeScore += outputs[1]
     totalWordCount -= 1
 finishTime = datetime.datetime.now()
+
+# Formula
+# (total correct type * correct typing weight) / ((total correct type * correct typing weight) + (total false type * false typing weight))
+
+score = (totalCorrectTypeScore * corrTypeWeight) / ((totalCorrectTypeScore * corrTypeWeight) + (totalFalseTypeScore * falseTypeWeight))
+score = int(round(score, 4) * 100)
 
 print("""\n\tRESULTS\n{}\nCorrect typing: {}
 False Typing: {}
 Test Completion Time: {}
-Final Score: {}""".format(25*"-",totalCorrectTypeScore, totalFalseTypeScore, finishTime-startTime, score))
+Final Score: {} %""".format(25*"-",totalCorrectTypeScore, totalFalseTypeScore, finishTime-startTime, score))
