@@ -28,7 +28,6 @@ def analyzeInput(targetWord):
         char = char_event.name
 
         if char == "esc":
-            #return [-1, -1, -1]
             return[-1, -1]
         elif char in blocked_keys:
             pass # Ignores the function buttons on the keyboard.
@@ -42,15 +41,12 @@ def analyzeInput(targetWord):
                 inputCharIndex += 1
                 inputWord += char
                 print("\r{}{}".format(inputWord,colorama.Style.RESET_ALL), end="")
-                #score += 10
                 correctTypeScore += 1
             else:
                 print("\r{}{}{}".format(colorama.Fore.RED,inputWord+char,colorama.Style.RESET_ALL), end="")
-                #score -= 10
                 falseTypeScore += 1
         if inputWord == targetWord:
             print("\r{}{}{}".format(colorama.Fore.GREEN,inputWord,colorama.Style.RESET_ALL), end="")
-            #return [score, correctTypeScore, falseTypeScore]
             return [correctTypeScore, falseTypeScore]
         char_event, char = "",""
 
@@ -59,7 +55,6 @@ inputWord = ""
 startTime, finishTime, wordStartTime, wordFinishTime, score, correctWords, wrongWords = 0,0,0,0,0,0,0
 totalCorrectTypeScore, totalFalseTypeScore = 0,0
 
-#wordList = ["car","rain","time"]
 seed = input("Please provide a text or number (up to 10 character) to select random word choice pattern: ")
 
 if len(seed) > 10: # If seed length is longer than 10 character reduces the seed to 10 character.
